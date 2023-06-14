@@ -4,7 +4,7 @@ const getUser = ( req, res, next ) => {
     try {
         const name =  req.query.name.toLowerCase().trim();
         if (!name || typeof name !== 'string' || name === '') {
-            return res.status(400).json('Invalid name parameter');
+            return res.status(400).json('Parametros inválidos.');
           }
 
         const foundUser = data.find((user) => user.name.toLowerCase().trim() === name);
