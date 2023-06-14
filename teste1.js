@@ -1,15 +1,22 @@
 var data =  require("./fakeData");
 
 const getUser = ( req, res, next ) => {
+    try {
+        const name =  req.query.name.toLowerCase().trim();
+        if (!name || typeof name !== 'string' || name === '') {
+            return res.status(400).json('Invalid name parameter');
+          }
+
+        const foundUser = data.find((user) => user.name.toLowerCase().trim() === name);
     
-    var name =  req.query.name;
-
-    for(let i = 0; i < data.length;  i++) {
-        if(i.name == name) {
-            res.send(data[i]);
-        }
+        if(foundUser != null && foundUser != undefined) {
+            res.status(200).json(foundUser);
+        } else {
+            res.status(404).json("Usuario não encontrado.");
+        }    
+    } catch (error) {
+        next(error);
     }
-
 };
 
 const getUsers = ( req, res, next ) => {
