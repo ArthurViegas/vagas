@@ -1,17 +1,32 @@
 var data =  require("./fakeData");
 
-module.exports = function(req, res){
+function parametroStringValido(value) {
+    return typeof value === 'string' && value.trim() !== '';
+  }
+
+module.exports = function(req, res, next) {
+    try {
+      const { name, job } = req.body;
+
+      if (!parametroStringValido(name) || !parametroStringValido(job)) {
+        return res.status(400).json('Parametros inválidos.');
+      }
+      
+      const currLength = data.length;
+      const newUser = {
+          id: currLength + 1,
+          name: name.trim(),
+          job: job.trim(),
+      }
   
-    var name =  req.body.name;
-    var jov =  req.body.job;
-    
-    var newUser = {
-        name: name,
-        job: job,
+      data.push(newUser);
+  
+      if (data.includes(newUser)) {
+        res.status(201).json(newUser);
+      } else {
+        res.status(400).json("Erro ao inserir usuário.");
+      }
+    } catch (error) {
+      next(error);
     }
-
-    data.push(newUser)
-    
-    res.send(newUser);
-
-};
+  };
