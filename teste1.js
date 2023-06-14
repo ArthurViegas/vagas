@@ -19,9 +19,16 @@ const getUser = ( req, res, next ) => {
     }
 };
 
-const getUsers = ( req, res, next ) => {
-    
-    res.send(data);
+const getUsers = ( req, res, next ) => {    
+    try {    
+        if(data != null && data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json("Nenhum usuário encontrado.");
+        }    
+    } catch (error) {
+        next(error);
+    }
     
 };
 
