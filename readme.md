@@ -41,3 +41,15 @@ Retorne quantas vezes determinado usuário foi lido no teste1.
 
 Definina uma forma de criar permissão para o usuario, defina se o usuário pode deletar ou atualizar usuários. Crie um middleware para validar essas permissões e adicione no teste4 e teste3.
 
+Para o teste 6 eu adicionei uma "senha" e "role" para os usuarios e criei um endpoint de login, onde o voce fara um post passando um json
+
+{
+	"name": "Arthur",
+	"password": "senha123"
+}
+
+A senha é salva com criptografia "bcrypt", ao fazer o post, a senha é comparada pela propria biblioteca bcrypt, com a senha criptografada, 
+se retornar um okay, sera gerado um token JWT, salvando o "name" e "role" do usuario.
+
+O fazer um request de update/delete, sera necessario enviar o token via header Authorization
+esse token sera decriptografado com um "secret" e ira retornar o "name" e "role" do usuario, caso ele seja um admin, o delete/update sera efetuado.
