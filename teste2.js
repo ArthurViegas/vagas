@@ -25,9 +25,9 @@ module.exports = function(req, res, next) {
 
       if (data.includes(newUser)) res.status(201).json(newUser);
 
-       res.status(400).json("Erro ao inserir usuário.");
+       res.status(400).json({ message: "Erro ao inserir usuário."});
     } catch (error) {
-      next(error);
-    }
+      return res.status(500).json({ message: 'Erro interno.' });
+        }
   };
   

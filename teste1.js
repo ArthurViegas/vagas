@@ -9,7 +9,7 @@ const userCounters = data.reduce((counters, user) => {
 const incrementUserCounter = (userId) => {
     userCounters[userId]++;
   
-    // Escrever a contagem em um arquivo .txt
+    // Escreve a contagem em um arquivo .txt
     const file = `counters/userCount_${userId}.txt`;
     const count = userCounters[userId].toString();
     
@@ -20,7 +20,7 @@ const incrementUserCounter = (userId) => {
     }
   };
 
-const getUser = ( req, res, next ) => {
+const getUser = ( req, res ) => {
     try {
         const name =  req.query.name;
 
@@ -36,9 +36,9 @@ const getUser = ( req, res, next ) => {
             return res.status(200).json(foundUser);
         } 
 
-        return res.status(404).json("Usuario não encontrado.");    
+        return res.status(404).json({ message: "Usuario não encontrado."});
     } catch (error) {
-        next(error);
+      return res.status(500).json({ message: 'Erro interno.' });
     }
 };
 
@@ -47,10 +47,10 @@ const getUsers = ( req, res, next ) => {
         if(data != null && data.length > 0) {
             res.status(200).json(data);
         } else {
-            res.status(404).json("Nenhum usuário encontrado.");
+            res.status(404).json({ message: "Nenhum usuário encontrado."});
         }    
     } catch (error) {
-        next(error);
+      return res.status(500).json({ message: 'Erro interno.' });
     }
     
 };
