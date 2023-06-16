@@ -1,5 +1,5 @@
 const data = require("./fakeData");
-const fs = require('fs');
+const fs = require("fs");
 
 const userCounters = data.reduce((counters, user) => {
   counters[user.id] = 0;
@@ -16,7 +16,7 @@ const incrementUserCounter = (userId) => {
     try {
       fs.writeFileSync(file, count);
     } catch (err) {
-      console.error('Erro ao escrever no arquivo:', err);
+      console.error("Erro ao escrever no arquivo:", err);
     }
   };
 
@@ -25,7 +25,7 @@ const getUser = ( req, res ) => {
         const name =  req.query.name;
 
         // verifica se a query existe e não está vazia.
-        if (!name || name === '') res.status(400).json('Parametros inválidos.');
+        if (!name || name === '') res.status(400).json("Parametros inválidos.");
 
         // utilia uma HOF para fazer um find na lista utilizando a propriedade "name" como 
         const foundUser = data.find((user) => user.name.toLowerCase().trim() === name.toLowerCase().trim());
@@ -38,7 +38,7 @@ const getUser = ( req, res ) => {
 
         return res.status(404).json({ message: "Usuario não encontrado."});
     } catch (error) {
-      return res.status(500).json({ message: 'Erro interno.' });
+      return res.status(500).json({ message: "Erro interno." });
     }
 };
 
@@ -50,7 +50,7 @@ const getUsers = ( req, res, next ) => {
             res.status(404).json({ message: "Nenhum usuário encontrado."});
         }    
     } catch (error) {
-      return res.status(500).json({ message: 'Erro interno.' });
+      return res.status(500).json({ message: "Erro interno." });
     }
     
 };

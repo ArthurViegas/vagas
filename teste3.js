@@ -1,6 +1,6 @@
 var data =  require("./fakeData");
 
-module.exports = function(req, res, next) {
+module.exports = function(req, res) {
     try {
         const name =  req.query.name;
 
@@ -24,6 +24,6 @@ module.exports = function(req, res, next) {
 
         return res.status(404).json({ message: "Usuario não encontrado."});
     } catch (error) {
-        return res.status(500).json({ message: 'Erro interno.' });
+        return res.status(500).json({ message: "Erro interno." });
         }
 };
