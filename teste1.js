@@ -1,4 +1,24 @@
-var data =  require("./fakeData");
+const data = require("./fakeData");
+const fs = require('fs');
+
+const userCounters = data.reduce((counters, user) => {
+  counters[user.id] = 0;
+  return counters;
+}, {});
+
+const incrementUserCounter = (userId) => {
+    userCounters[userId]++;
+  
+    // Escrever a contagem em um arquivo .txt
+    const file = `counters/userCount_${userId}.txt`;
+    const count = userCounters[userId].toString();
+    
+    try {
+      fs.writeFileSync(file, count);
+    } catch (err) {
+      console.error('Erro ao escrever no arquivo:', err);
+    }
+  };
 
 const getUser = ( req, res, next ) => {
     try {
@@ -11,9 +31,12 @@ const getUser = ( req, res, next ) => {
         const foundUser = data.find((user) => user.name.toLowerCase().trim() === name.toLowerCase().trim());
     
         // Caso nao encontre o usuario, retorna undefined, portanto, utilizo uma ! para converter para booleano (true) e mais uma ! para tornar o undefined = false.
-        if(!!foundUser) res.status(200).json(foundUser);
+        if(!!foundUser) {
+            incrementUserCounter(foundUser.id);
+            return res.status(200).json(foundUser);
+        } 
 
-        res.status(404).json("Usuario não encontrado.");    
+        return res.status(404).json("Usuario não encontrado.");    
     } catch (error) {
         next(error);
     }
@@ -33,6 +56,6 @@ const getUsers = ( req, res, next ) => {
 };
 
 module.exports = {
-    getUser,
-    getUsers
+  getUser,
+  getUsers
 };
