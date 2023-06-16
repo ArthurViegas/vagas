@@ -2,18 +2,18 @@ var data =  require("./fakeData");
 
 const getUser = ( req, res, next ) => {
     try {
-        const name =  req.query.name.toLowerCase().trim();
-        if (!name || typeof name !== 'string' || name === '') {
-            return res.status(400).json('Parametros inválidos.');
-          }
+        const name =  req.query.name;
 
-        const foundUser = data.find((user) => user.name.toLowerCase().trim() === name);
+        // verifica se a query existe e não está vazia.
+        if (!name || name === '') res.status(400).json('Parametros inválidos.');
+
+        // utilia uma HOF para fazer um find na lista utilizando a propriedade "name" como 
+        const foundUser = data.find((user) => user.name.toLowerCase().trim() === name.toLowerCase().trim());
     
-        if(foundUser != null && foundUser != undefined) {
-            res.status(200).json(foundUser);
-        } else {
-            res.status(404).json("Usuario não encontrado.");
-        }    
+        // Caso nao encontre o usuario, retorna undefined, portanto, utilizo uma ! para converter para booleano (true) e mais uma ! para tornar o undefined = false.
+        if(!!foundUser) res.status(200).json(foundUser);
+
+        res.status(404).json("Usuario não encontrado.");    
     } catch (error) {
         next(error);
     }
